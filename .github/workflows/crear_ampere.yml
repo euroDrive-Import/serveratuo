@@ -1,0 +1,43 @@
+name: Oracle Cloud Auto-Aprovisionamiento
+
+on:
+  schedule:
+    # Se ejecuta cada 15 minutos automáticamente
+    - cron: '*/15 * * * *'
+  workflow_dispatch: # Te permite darle al botón "Run workflow" manualmente
+
+jobs:
+  crear-servidor:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar OCI CLI
+        run: |
+          python -m pip install --upgrade pip
+          pip install oci-cli
+
+      - name: Configurar autenticación de Oracle
+        run: |
+          mkdir -p ~/.oci
+          # Creamos el archivo con tu clave privada
+          echo "${{ secrets.OCI_PRIVATE_KEY }}" > ~/.oci/oci_api_key.pem
+          chmod 600 ~/.oci/oci_api_key.pem
+          
+          # Creamos el archivo de configuración
+          cat <<EOF > ~/.oci/config
+          [DEFAULT]
+          user=${{ secrets.OCI_USER_OCID }}
+          fingerprint=${{ secrets.OCI_FINGERPRINT }}
+          tenancy=${{ secrets.OCI_TENANCY_OCID }}
+          region=${{ secrets.OCI_REGION }}
+          key_file=/home/runner/.oci/oci_api_key.pem
+          EOF
+          chmod 600 ~/.oci/config
+
+      - name: Ejecutar script de creación
+        run: |
+          chmod +x crear_instancia.sh
+          ./crear_instancia.sh
