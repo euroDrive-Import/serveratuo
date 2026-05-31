@@ -2,8 +2,8 @@ name: Oracle Cloud Auto-Aprovisionamiento
 
 on:
   schedule:
-    # Se ejecuta cada 15 minutos automáticamente
-    - cron: '*/15 * * * *'
+    # Se ejecuta cada 4 horas automáticamente
+    - cron: '0 */4 * * *'
   workflow_dispatch: # Te permite darle al botón "Run workflow" manualmente
 
 jobs:

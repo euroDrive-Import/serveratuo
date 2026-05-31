@@ -28,8 +28,8 @@ fi
 echo "  Red lista → Subnet: $SUBNET_ID"
 echo "=================================================================="
 
-# Bucle de 20 intentos (aprox 15 minutos)
-for intentos in {1..20}; do
+# Bucle de 120 intentos (aprox 5 horas de ejecución continua)
+for intentos in {1..120}; do
   AD_INDEX=$(( (intentos - 1) % 3 ))
   CURRENT_AD="${ADS[$AD_INDEX]}"
   TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
@@ -75,4 +75,4 @@ for intentos in {1..20}; do
   sleep 45
 done
 
-echo "Terminaron los 20 intentos de esta ronda. GitHub volverá a lanzarlo en breve."
+echo "Terminaron las 5 horas de esta ronda. GitHub volverá a lanzarlo en breve."
